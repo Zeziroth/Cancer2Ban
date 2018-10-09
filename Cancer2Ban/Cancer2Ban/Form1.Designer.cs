@@ -38,7 +38,16 @@
             this.metroTextBox_APIKEY = new MetroFramework.Controls.MetroTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.metroCheckBox2 = new MetroFramework.Controls.MetroCheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.metroButton_APPLYGLOBAL = new MetroFramework.Controls.MetroButton();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDown_AttemptObserve = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown_BanAttempts = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_AttemptObserve)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BanAttempts)).BeginInit();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -179,11 +188,70 @@
             this.metroCheckBox2.Text = "show Password";
             this.metroCheckBox2.UseSelectable = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.metroButton_APPLYGLOBAL);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.numericUpDown_AttemptObserve);
+            this.groupBox2.Controls.Add(this.numericUpDown_BanAttempts);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Location = new System.Drawing.Point(572, 70);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(414, 120);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Global Settings";
+            // 
+            // metroButton_APPLYGLOBAL
+            // 
+            this.metroButton_APPLYGLOBAL.Location = new System.Drawing.Point(333, 91);
+            this.metroButton_APPLYGLOBAL.Name = "metroButton_APPLYGLOBAL";
+            this.metroButton_APPLYGLOBAL.Size = new System.Drawing.Size(75, 23);
+            this.metroButton_APPLYGLOBAL.TabIndex = 4;
+            this.metroButton_APPLYGLOBAL.Text = "APPLY";
+            this.metroButton_APPLYGLOBAL.UseSelectable = true;
+            this.metroButton_APPLYGLOBAL.Click += new System.EventHandler(this.metroButton_APPLYGLOBAL_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(15, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(277, 11);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Observe # minutes for same attempt";
+            // 
+            // numericUpDown_AttemptObserve
+            // 
+            this.numericUpDown_AttemptObserve.Location = new System.Drawing.Point(301, 47);
+            this.numericUpDown_AttemptObserve.Name = "numericUpDown_AttemptObserve";
+            this.numericUpDown_AttemptObserve.Size = new System.Drawing.Size(103, 18);
+            this.numericUpDown_AttemptObserve.TabIndex = 2;
+            // 
+            // numericUpDown_BanAttempts
+            // 
+            this.numericUpDown_BanAttempts.Location = new System.Drawing.Point(301, 25);
+            this.numericUpDown_BanAttempts.Name = "numericUpDown_BanAttempts";
+            this.numericUpDown_BanAttempts.Size = new System.Drawing.Size(103, 18);
+            this.numericUpDown_BanAttempts.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(15, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(181, 11);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Ban after # attempts: ";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 11F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 387);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.metroToggle1);
@@ -198,6 +266,10 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_AttemptObserve)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BanAttempts)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -215,6 +287,12 @@
         private MetroFramework.Controls.MetroButton metroButton_Apply;
         private MetroFramework.Controls.MetroButton metroButton_Edit;
         private MetroFramework.Controls.MetroCheckBox metroCheckBox2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numericUpDown_AttemptObserve;
+        private System.Windows.Forms.NumericUpDown numericUpDown_BanAttempts;
+        private System.Windows.Forms.Label label3;
+        private MetroFramework.Controls.MetroButton metroButton_APPLYGLOBAL;
     }
 }
 
