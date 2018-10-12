@@ -10,7 +10,7 @@ namespace Cancer2Ban
     public class AbuseIPDB
     {
         private static readonly byte BRUTEFORCE_CATEGORY = 18;
-        private static readonly string COMMENT = "Cancer2Ban-Autoban for Windows (see: https://github.com/Zeziroth/Cancer2Ban)";
+        private static readonly string COMMENT = "RDP-Bruteforce | Cancer2Ban-Autoban for Windows (see: https://github.com/Zeziroth/Cancer2Ban)";
         private static readonly string REPORT_URL = "https://www.abuseipdb.com/report/json?key={0}&category={1}&comment={2}&ip={3}";
         private static WebClient client = new WebClient();
 
@@ -20,17 +20,24 @@ namespace Cancer2Ban
         }
         public static void ReportIP(string ip)
         {
-            string apiKey = GET_AbuseIPDB_KEY();
-            if (apiKey == "")
+            try
             {
-                Form1.main.LogAction(Form1.LOG_STATE.ERROR, "No valid AbuseIPDB-ApiKey found!");
-                return;
-            }
+                string apiKey = GET_AbuseIPDB_KEY();
+                if (apiKey == "")
+                {
+                    Form1.main.LogAction(Form1.LOG_STATE.ERROR, "No valid AbuseIPDB-ApiKey found!");
+                    return;
+                }
 
-            if (!AlreadyReported(ip))
+                if (!AlreadyReported(ip))
+                {
+                    client.DownloadString(String.Format(REPORT_URL, apiKey, BRUTEFORCE_CATEGORY, COMMENT, ip));
+                    Form1.sql.ReturnQuery("INSERT INTO bans (ip) VALUES ('" + ip + "')");
+                }
+            }
+            catch
             {
-                Form1.sql.ReturnQuery("INSERT INTO bans (ip) VALUES ('" + ip + "')");
-                client.DownloadString(String.Format(REPORT_URL, apiKey, BRUTEFORCE_CATEGORY, COMMENT, ip));
+                Form1.main.LogAction(Form1.LOG_STATE.ERROR, "Error while reporting on AbuseIPDB (" + ip + ")");
             }
         }
 
@@ -49,15 +56,23 @@ namespace Cancer2Ban
 
         private static string GET_AbuseIPDB_KEY()
         {
-            string apiKey = "";
-
-            SQLRecord record = Form1.sql.ReturnQuery("SELECT * FROM settings WHERE name = 'apikey' LIMIT 1");
-            if (record.NumRows() == 1)
+            try
             {
-                apiKey = record.GetValue(0, "val");
-            }
+                string apiKey = "";
 
-            return apiKey;
+                SQLRecord record = Form1.sql.ReturnQuery("SELECT * FROM settings WHERE name = 'apikey' LIMIT 1");
+                if (record.NumRows() == 1)
+                {
+                    apiKey = record.GetValue(0, "val");
+                }
+
+                return apiKey;
+            }
+            catch
+            {
+                Form1.main.LogAction(Form1.LOG_STATE.ERROR, "Could not retrieve APIKEY from database");
+                return "";
+            }
         }
     }
 }
