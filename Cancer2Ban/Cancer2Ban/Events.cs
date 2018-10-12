@@ -44,6 +44,9 @@ namespace Cancer2Ban
             if (!running)
             {
                 running = true;
+                Form1.main.button1.Enabled = false;
+                Form1.main.button2.Enabled = true;
+                Form1.main.LogAction(Form1.LOG_STATE.INFO, "Started guard");
             }
 
             Core.RunThread(CheckRoutine);
@@ -111,6 +114,9 @@ namespace Cancer2Ban
         public void Stop_CheckEvents()
         {
             running = false;
+            Form1.main.button1.Enabled = true;
+            Form1.main.button2.Enabled = false;
+            Form1.main.LogAction(Form1.LOG_STATE.INFO, "Stopped guard");
         }
     }
 }

@@ -47,6 +47,7 @@
             this.numericUpDown_BanAttempts = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BanDuration)).BeginInit();
@@ -59,7 +60,7 @@
             this.richTextBox1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox1.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(27, 270);
+            this.richTextBox1.Location = new System.Drawing.Point(26, 306);
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
@@ -277,19 +278,39 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(476, 208);
+            this.button1.BackgroundImage = global::Cancer2Ban.Properties.Resources.shield;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(26, 173);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(171, 57);
+            this.button1.Size = new System.Drawing.Size(128, 128);
             this.button1.TabIndex = 5;
             this.button1.Text = "START GUARD";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackgroundImage = global::Cancer2Ban.Properties.Resources.shield_not;
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.Enabled = false;
+            this.button2.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(160, 173);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(128, 128);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "STOP GUARD";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 11F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1134, 387);
+            this.ClientSize = new System.Drawing.Size(1134, 429);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -329,7 +350,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private MetroFramework.Controls.MetroButton metroButton_APPLYGLOBAL;
-        private System.Windows.Forms.Button button1;
         public System.Windows.Forms.RichTextBox richTextBox1;
         public MetroFramework.Controls.MetroTextBox metroTextBox_APIKEY;
         public System.Windows.Forms.NumericUpDown numericUpDown_AttemptObserve;
@@ -337,6 +357,8 @@
         public System.Windows.Forms.NumericUpDown numericUpDown_BanDuration;
         private System.Windows.Forms.Label label5;
         public MetroFramework.Controls.MetroToggle metroToggle1;
+        public System.Windows.Forms.Button button2;
+        public System.Windows.Forms.Button button1;
     }
 }
 

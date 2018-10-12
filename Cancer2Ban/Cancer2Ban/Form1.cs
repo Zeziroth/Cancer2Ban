@@ -211,5 +211,10 @@ namespace Cancer2Ban
         {
             metroTextBox_APIKEY.PasswordChar = metroCheckBox2.Checked ? '\0' : '*';
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            eventInstance.Stop_CheckEvents();
+        }
     }
 }
