@@ -1,9 +1,6 @@
 ﻿using NetFwTypeLib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cancer2Ban
 {
@@ -14,55 +11,86 @@ namespace Cancer2Ban
 
         private static INetFwRules GetAllRules()
         {
-            Type tNetFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2");
-            INetFwPolicy2 fwPolicy2 = (INetFwPolicy2)Activator.CreateInstance(tNetFwPolicy2);
+            try
+            {
+                Type tNetFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2");
+                INetFwPolicy2 fwPolicy2 = (INetFwPolicy2)Activator.CreateInstance(tNetFwPolicy2);
 
-            return fwPolicy2.Rules;
+                return fwPolicy2.Rules;
+            }
+            catch
+            {
+                Form1.main.LogAction(Form1.LOG_STATE.ERROR, "Error while retrieving Firewall rulelist");
+                return null;
+            }
         }
 
         public static List<INetFwRule> GetRulesByName(string name)
         {
-            List<INetFwRule> ruleList = new List<INetFwRule>();
 
-            foreach (INetFwRule rule in GetAllRules())
+            List<INetFwRule> ruleList = new List<INetFwRule>();
+            try
             {
-                if (rule.Name.ToLower().Contains(name.ToLower()))
+
+                foreach (INetFwRule rule in GetAllRules())
                 {
-                    ruleList.Add(rule);
+                    if (rule.Name.ToLower().Contains(name.ToLower()))
+                    {
+                        ruleList.Add(rule);
+                    }
                 }
+                return ruleList;
             }
-            return ruleList;
+            catch
+            {
+                Form1.main.LogAction(Form1.LOG_STATE.ERROR, "Error while retrieving Firewall rule by name (" + name + ")");
+                return ruleList;
+            }
         }
 
         public static void AddRule(string ip, DateTime until)
         {
-            string ruleName = "Cancer2Ban: " + ip;
+            try
+            {
+                string ruleName = "Cancer2Ban: " + ip;
 
-            INetFwRules rules = GetAllRules();
-            INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HnetCfg.FWRule"));
-            rule.Name = ruleName;
-            rule.RemoteAddresses = ip;
-            rule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK;
-            rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_ANY;
-            rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
-            rule.Description = "Cancer2Ban-" + until.ToString(TIMEFORMAT);
-            rule.Enabled = true;
-            rules.Add(rule);
+                INetFwRules rules = GetAllRules();
+                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HnetCfg.FWRule"));
+                rule.Name = ruleName;
+                rule.RemoteAddresses = ip;
+                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK;
+                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_ANY;
+                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
+                rule.Description = "Cancer2Ban-" + until.ToString(TIMEFORMAT);
+                rule.Enabled = true;
+                rules.Add(rule);
+            }
+            catch
+            {
+                Form1.main.LogAction(Form1.LOG_STATE.ERROR, "Error while adding Firewalrule for " + ip);
+            }
         }
 
         public static void LiftBans()
         {
-            DateTime now = DateTime.Now;
-            List<INetFwRule> rules = GetRulesByName(Firewall.FW_PREFIX);
-
-            foreach (INetFwRule rule in rules)
+            try
             {
-                DateTime until = DateTime.ParseExact(rule.Description.Split('-')[1], TIMEFORMAT, System.Globalization.CultureInfo.InvariantCulture);
+                DateTime now = DateTime.Now;
+                List<INetFwRule> rules = GetRulesByName(Firewall.FW_PREFIX);
 
-                if (now > until)
+                foreach (INetFwRule rule in rules)
                 {
-                    GetAllRules().Remove(rule.Name);
+                    DateTime until = DateTime.ParseExact(rule.Description.Split('-')[1], TIMEFORMAT, System.Globalization.CultureInfo.InvariantCulture);
+
+                    if (now > until)
+                    {
+                        GetAllRules().Remove(rule.Name);
+                    }
                 }
+            }
+            catch
+            {
+                Form1.main.LogAction(Form1.LOG_STATE.ERROR, "Error while lifting old bans");
             }
         }
     }
