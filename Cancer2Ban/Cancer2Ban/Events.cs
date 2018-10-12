@@ -30,12 +30,6 @@ namespace Cancer2Ban
                         {
                             entries.Add(log);
                         }
-                        else
-                        {
-                            //CPU Flaw that causes high CPU loads when there are a lot of security events.
-                            //Thanks to Luca Weidmann for this issue on 12.10.2018
-                            break;
-                        }
                     }
                 }
 
