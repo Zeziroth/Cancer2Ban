@@ -24,9 +24,18 @@ namespace Cancer2Ban
 
                 foreach (EventLogEntry log in eventLog.Entries)
                 {
-                    if (log.EventID == RDP_ID && log.TimeGenerated > DateTime.Now.AddMinutes(((double)Form1.main.numericUpDown_AttemptObserve.Value * -1)))
+                    if (log.EventID == RDP_ID)
                     {
-                        entries.Add(log);
+                        if (log.TimeGenerated > DateTime.Now.AddMinutes(((double)Form1.main.numericUpDown_AttemptObserve.Value * -1)))
+                        {
+                            entries.Add(log);
+                        }
+                        else
+                        {
+                            //CPU Flaw that causes high CPU loads when there are a lot of security events.
+                            //Thanks to Luca Weidmann for this issue on 12.10.2018
+                            break;
+                        }
                     }
                 }
 
