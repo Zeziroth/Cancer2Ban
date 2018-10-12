@@ -86,18 +86,21 @@ namespace Cancer2Ban
 
                         string logInfo = "";
                         int ruleCount = Firewall.GetRulesByName(Firewall.FW_PREFIX + ip).Count;
-
+                        bool nowBanned = false;
                         if (attempts >= Form1.main.numericUpDown_BanAttempts.Value && ruleCount == 0)
                         {
                             logInfo = " (Banned)";
+                            nowBanned = true;
                             Firewall.AddRule(ip, DateTime.Now.AddMinutes((int)Form1.main.numericUpDown_BanDuration.Value));
 
                             if (Form1.main.metroToggle1.Checked)
                             {
                                 AbuseIPDB.ReportIP(ip);
+                                logInfo += " (Auto banned on AbuseIPDB)";
                             }
                         }
-                        if (ruleCount == 0)
+
+                        if (ruleCount == 0 || nowBanned)
                         {
                             Form1.main.LogAction(Form1.LOG_STATE.INFO, "Received attack from: " + ip + " (Attempt #" + attacks[ip] + ")" + logInfo);
                         }
