@@ -39,13 +39,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.metroCheckBox2 = new MetroFramework.Controls.MetroCheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown_BanDuration = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.metroButton_APPLYGLOBAL = new MetroFramework.Controls.MetroButton();
             this.label4 = new System.Windows.Forms.Label();
             this.numericUpDown_AttemptObserve = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown_BanAttempts = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BanDuration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_AttemptObserve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BanAttempts)).BeginInit();
             this.SuspendLayout();
@@ -183,13 +187,16 @@
             this.metroCheckBox2.AutoSize = true;
             this.metroCheckBox2.Location = new System.Drawing.Point(415, 23);
             this.metroCheckBox2.Name = "metroCheckBox2";
-            this.metroCheckBox2.Size = new System.Drawing.Size(104, 15);
+            this.metroCheckBox2.Size = new System.Drawing.Size(72, 15);
             this.metroCheckBox2.TabIndex = 6;
-            this.metroCheckBox2.Text = "show Password";
+            this.metroCheckBox2.Text = "show key";
             this.metroCheckBox2.UseSelectable = true;
+            this.metroCheckBox2.CheckedChanged += new System.EventHandler(this.metroCheckBox2_CheckedChanged);
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.numericUpDown_BanDuration);
+            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.metroButton_APPLYGLOBAL);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.numericUpDown_AttemptObserve);
@@ -197,14 +204,36 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(572, 70);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(414, 120);
+            this.groupBox2.Size = new System.Drawing.Size(414, 132);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Global Settings";
             // 
+            // numericUpDown_BanDuration
+            // 
+            this.numericUpDown_BanDuration.Location = new System.Drawing.Point(301, 69);
+            this.numericUpDown_BanDuration.Maximum = new decimal(new int[] {
+            -1981284353,
+            -1966660860,
+            0,
+            0});
+            this.numericUpDown_BanDuration.Name = "numericUpDown_BanDuration";
+            this.numericUpDown_BanDuration.Size = new System.Drawing.Size(103, 18);
+            this.numericUpDown_BanDuration.TabIndex = 6;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(15, 70);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(229, 11);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Duration of ban (in minutes)";
+            // 
             // metroButton_APPLYGLOBAL
             // 
-            this.metroButton_APPLYGLOBAL.Location = new System.Drawing.Point(333, 91);
+            this.metroButton_APPLYGLOBAL.Location = new System.Drawing.Point(329, 103);
             this.metroButton_APPLYGLOBAL.Name = "metroButton_APPLYGLOBAL";
             this.metroButton_APPLYGLOBAL.Size = new System.Drawing.Size(75, 23);
             this.metroButton_APPLYGLOBAL.TabIndex = 4;
@@ -246,11 +275,22 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Ban after # attempts: ";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(476, 208);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(171, 57);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "START GUARD";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 11F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 387);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
@@ -263,11 +303,13 @@
             this.Padding = new System.Windows.Forms.Padding(23, 60, 23, 17);
             this.Resizable = false;
             this.Text = "Cancer2Ban";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BanDuration)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_AttemptObserve)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BanAttempts)).EndInit();
             this.ResumeLayout(false);
@@ -276,12 +318,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private MetroFramework.Controls.MetroToggle metroToggle1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private MetroFramework.Controls.MetroTextBox metroTextBox_APIKEY;
         private System.Windows.Forms.Label label2;
         private MetroFramework.Controls.MetroCheckBox metroCheckBox1;
         private MetroFramework.Controls.MetroButton metroButton_Apply;
@@ -289,10 +327,16 @@
         private MetroFramework.Controls.MetroCheckBox metroCheckBox2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numericUpDown_AttemptObserve;
-        private System.Windows.Forms.NumericUpDown numericUpDown_BanAttempts;
         private System.Windows.Forms.Label label3;
         private MetroFramework.Controls.MetroButton metroButton_APPLYGLOBAL;
+        private System.Windows.Forms.Button button1;
+        public System.Windows.Forms.RichTextBox richTextBox1;
+        public MetroFramework.Controls.MetroTextBox metroTextBox_APIKEY;
+        public System.Windows.Forms.NumericUpDown numericUpDown_AttemptObserve;
+        public System.Windows.Forms.NumericUpDown numericUpDown_BanAttempts;
+        public System.Windows.Forms.NumericUpDown numericUpDown_BanDuration;
+        private System.Windows.Forms.Label label5;
+        public MetroFramework.Controls.MetroToggle metroToggle1;
     }
 }
 

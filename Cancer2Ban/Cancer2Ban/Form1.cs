@@ -7,17 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Diagnostics.Eventing;
+using System.Diagnostics;
+using NetFwTypeLib;
 namespace Cancer2Ban
 {
     public partial class Form1 : MetroFramework.Forms.MetroForm
     {
+        public static Form1 main;
         private static readonly string SQLITE_NAME = "cancer2ban";
 
         private string oldAPI = "";
         private decimal oldBanAttempts = 0;
         private decimal oldAttemptMinutes = 0;
+        private decimal oldBanDuration = 0;
 
+        private Events eventInstance;
         public enum LOG_STATE
         {
             INFO = -1,
@@ -25,7 +30,7 @@ namespace Cancer2Ban
             ERROR = 1
         }
 
-        SQLiteController sql = null;
+        public static SQLiteController sql = new SQLiteController(SQLITE_NAME);
         public Form1()
         {
             InitializeComponent();
@@ -34,7 +39,7 @@ namespace Cancer2Ban
 
         private void Start_Routine()
         {
-            sql = new SQLiteController(SQLITE_NAME);
+            main = this;
             LogAction(LOG_STATE.INFO, "Initializing database");
             if (!sql.IsConnected())
             {
@@ -44,7 +49,7 @@ namespace Cancer2Ban
             {
                 sql.ReturnQuery("CREATE TABLE IF NOT EXISTS settings (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(50), val VARCHAR(50));");
                 sql.ReturnQuery("CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, ip VARCHAR(39), requesttime BIGINT(10));");
-                sql.ReturnQuery("CREATE TABLE IF NOT EXISTS bans (id INTEGER PRIMARY KEY AUTOINCREMENT, ip VARCHAR(39), bantime BIGINT(10), permban INT(2));");
+                sql.ReturnQuery("CREATE TABLE IF NOT EXISTS bans (id INTEGER PRIMARY KEY AUTOINCREMENT, ip VARCHAR(39));");
 
                 LogAction(LOG_STATE.INFO, "Loaded .sqlite-Database!");
 
@@ -55,6 +60,9 @@ namespace Cancer2Ban
 
                     switch (record.GetValue(row, "name"))
                     {
+                        case "autoban_enabled":
+                            metroToggle1.Checked = (val == "1") ? true : false;
+                            break;
                         case "apicheck":
                             metroCheckBox1.Checked = (val == "1") ? true : false;
                             break;
@@ -63,15 +71,21 @@ namespace Cancer2Ban
                             metroTextBox_APIKEY.Text = val;
                             break;
                         case "banattempts":
-                            numericUpDown_BanAttempts.Value = int.Parse(val);
-                            oldBanAttempts = int.Parse(val);
+                            numericUpDown_BanAttempts.Value = decimal.Parse(val);
+                            oldBanAttempts = decimal.Parse(val);
                             break;
                         case "attemptminutes":
-                            numericUpDown_AttemptObserve.Value = int.Parse(val);
-                            oldAttemptMinutes = int.Parse(val);
+                            numericUpDown_AttemptObserve.Value = decimal.Parse(val);
+                            oldAttemptMinutes = decimal.Parse(val);
+                            break;
+                        case "banduration":
+                            numericUpDown_BanDuration.Value = decimal.Parse(val);
+                            oldBanDuration = decimal.Parse(val);
                             break;
                     }
                 }
+
+                eventInstance = new Events();
             }
         }
 
@@ -80,7 +94,7 @@ namespace Cancer2Ban
             Start_Routine();
         }
 
-        private void LogAction(LOG_STATE state, string action)
+        public void LogAction(LOG_STATE state, string action)
         {
             StringBuilder logBuilder = new StringBuilder();
 
@@ -101,7 +115,7 @@ namespace Cancer2Ban
 
             logBuilder.Append(action);
 
-            richTextBox1.Text = logBuilder.ToString() + Environment.NewLine + richTextBox1.Text;
+            Invoker.LogEntry(richTextBox1, logBuilder.ToString());
         }
 
         private void metroToggle1_CheckedChanged(object sender, EventArgs e)
@@ -135,7 +149,7 @@ namespace Cancer2Ban
 
                 string indi = metroCheckBox1.Checked ? "1" : "0";
                 ChangeSetting("apicheck", indi);
-                
+
 
                 if (metroCheckBox1.Checked)
                 {
@@ -180,6 +194,29 @@ namespace Cancer2Ban
                 LogAction(LOG_STATE.INFO, "Changed observing minutes between attempts!");
                 oldAttemptMinutes = numericUpDown_AttemptObserve.Value;
             }
+
+            if (numericUpDown_BanDuration.Value != oldBanDuration)
+            {
+                ChangeSetting("banduration", numericUpDown_BanDuration.Value.ToString());
+                LogAction(LOG_STATE.INFO, "Changed ban duration!");
+                oldBanDuration = numericUpDown_BanDuration.Value;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            eventInstance.Start_CheckEvents();
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Core.CloseThreads();
+            string apiEnabled = metroToggle1.Checked ? "1" : "0";
+            ChangeSetting("autoban_enabled", apiEnabled);
+        }
+
+        private void metroCheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            metroTextBox_APIKEY.PasswordChar = metroCheckBox2.Checked ? '\0' : '*';
         }
     }
 }
