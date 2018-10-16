@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -87,28 +88,28 @@ namespace Cancer2Ban
             Start_Routine();
         }
 
-        public void LogAction(LOG_STATE state, string action)
+        public void LogAction(LOG_STATE state, string action, string ip = "-", string href = "")
         {
-            StringBuilder logBuilder = new StringBuilder();
-
+            string stateStr = "";
             switch (state)
             {
                 case LOG_STATE.INFO:
-                    logBuilder.Append("[INFO]");
+                    stateStr = "[INFO]";
                     break;
                 case LOG_STATE.WARNING:
-                    logBuilder.Append("[WARNING]");
+                    stateStr = "[WARNING]";
                     break;
                 case LOG_STATE.ERROR:
-                    logBuilder.Append("[ERROR]");
+                    stateStr = "[ERROR]";
                     break;
             }
+            ListViewItem itm = new ListViewItem(new string[] { stateStr, DateTime.Now.ToString(" dd.mm.yyyy - HH:mm:ss"), action, ip });
+            if (href != "")
+            {
+                itm.Tag = href;
+            }
 
-            logBuilder.Append(DateTime.Now.ToString(" dd.mm.yyyy - HH:mm:ss\t"));
-
-            logBuilder.Append(action);
-
-            Invoker.LogEntry(richTextBox1, logBuilder.ToString());
+            Invoker.LogEntry(listView1, itm);
         }
 
         private void metroToggle1_CheckedChanged(object sender, EventArgs e)
@@ -215,6 +216,19 @@ namespace Cancer2Ban
         private void button2_Click(object sender, EventArgs e)
         {
             eventInstance.Stop_CheckEvents();
+        }
+
+        public void link_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1 && listView1.SelectedItems[0].Tag != null && listView1.SelectedItems[0].Tag.ToString().StartsWith("http"))
+            {
+                Process.Start(listView1.SelectedItems[0].Tag.ToString());
+            }
         }
     }
 }

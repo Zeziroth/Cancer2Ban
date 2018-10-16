@@ -25,7 +25,7 @@ namespace Cancer2Ban
 
         //Label
         private delegate void _SetLabelText(Label label, string msg, string clr);
-        private delegate void _LogEntry(RichTextBox control, string msg);
+        private delegate void _LogEntry(ListView control, ListViewItem itm);
 
         //Progressbar
         private delegate void _SetPrgbValue(ProgressBar prgb, int value, Mode mode);
@@ -76,16 +76,17 @@ namespace Cancer2Ban
                 ctrl.Visible = state;
             }
         }
-        public static void LogEntry(RichTextBox control, string msg)
+        public static void LogEntry(ListView control, ListViewItem itm)
         {
 
             if (control.InvokeRequired)
             {
-                control.Invoke(new _LogEntry(LogEntry), control, msg);
+                control.Invoke(new _LogEntry(LogEntry), control, itm);
             }
             else
             {
-                control.Text = msg + Environment.NewLine + control.Text;
+                control.Items.Add(itm);
+                control.Items[control.Items.Count - 1].EnsureVisible();
             }
 
         }

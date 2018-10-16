@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Cancer2Ban
 {
@@ -102,7 +103,7 @@ namespace Cancer2Ban
 
                         if (ruleCount == 0 || nowBanned)
                         {
-                            Form1.main.LogAction(Form1.LOG_STATE.INFO, "Received attack from: " + ip + " (Attempt #" + attacks[ip] + ")" + logInfo);
+                            Form1.main.LogAction(Form1.LOG_STATE.INFO, "Received attack (Attempt #" + attacks[ip] + ")" + logInfo, ip, "https://www.abuseipdb.com/check/" + ip);
                         }
 
                         handledEvents.Add(entry.Index);
