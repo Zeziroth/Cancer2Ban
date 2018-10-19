@@ -88,6 +88,7 @@ namespace Cancer2Ban
                         string logInfo = "";
                         int ruleCount = Firewall.GetRulesByName(Firewall.FW_PREFIX + ip).Count;
                         bool nowBanned = false;
+
                         if (attempts >= Form1.main.numericUpDown_BanAttempts.Value && ruleCount == 0)
                         {
                             logInfo = " (Banned)";

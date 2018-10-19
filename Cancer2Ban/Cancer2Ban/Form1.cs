@@ -103,7 +103,7 @@ namespace Cancer2Ban
                     stateStr = "[ERROR]";
                     break;
             }
-            ListViewItem itm = new ListViewItem(new string[] { stateStr, DateTime.Now.ToString(" dd.mm.yyyy - HH:mm:ss"), action, ip });
+            ListViewItem itm = new ListViewItem(new string[] { stateStr, DateTime.Now.ToString(" dd.MM.yyyy - HH:mm:ss"), action, ip });
             if (href != "")
             {
                 itm.Tag = href;
